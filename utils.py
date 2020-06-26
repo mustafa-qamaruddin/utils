@@ -3,7 +3,6 @@ import pandas as pd
 
 target='Mustafa'
 
-
 cols = [
     'Unnamed: 1',
     'Morning 9m-1pm EST',
@@ -37,12 +36,15 @@ mapper = {
     'Morning 8m-12pm EST':'G4/08:00-12:00',
     'Unnamed: 20':'G4/A/teacher',
     'Afternoon 1pm-5pm EST':'G4/13:00-17:00',
-    'Unnamed: 22':'G4/A/teacher',
+    'Unnamed: 22':'G4/B/teacher',
     '6pm-10pm EST\n10am-6pm EST.1':'G5/18:00-22:00',
     'Evening / Satursday.1':'G5/A/teacher'
 }
 
 df = pd.read_csv('timetable.csv', skiprows=1)
+print(df.columns)
+
+
 df = df[cols]
 
 df = df.rename(columns=mapper)
@@ -91,6 +93,15 @@ ret['TimeD'] = ''
 ret['Saturdays'] = ''
 
 
+print('*'*10)
+for cc in teacher_columns:
+
+    results = df[cc]
+
+    if 'Mustafa' not in results:
+        print(cc)
+
+
 cols = list(df.columns)
 
 for idx in range(len(df.index)):
@@ -125,7 +136,11 @@ for idx in range(len(df.index)):
                 ret['TimeA'].iloc[idx] = '08:00-12:00'
                 ret.iloc[idx, 3] = df.iloc[idx, column_idx-1]
             
+            if 'G4/13:00-17:00' == cols[column_idx-1]:
+                print(cols[column_idx-1], cols[column_idx-1] in e)
+
             if cols[column_idx-1] in e:
+                print(cols[column_idx-1], df.iloc[idx, column_idx-1])
                 ret['TimeB'].iloc[idx] = '13:00-17:00'
                 ret.iloc[idx, 5] = df.iloc[idx, column_idx-1]
 
